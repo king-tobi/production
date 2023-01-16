@@ -16,11 +16,7 @@ jobs:
             --template-file bucket.yml \
             --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID:0:7} \
             --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:7}" \
-<<<<<<< HEAD
             --region us-east-1
-=======
-            --region=us-east-1 
->>>>>>> af36afd0edb7c7c3977f39b387cd3f707cb7b1de
       # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
       - run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
 
@@ -36,15 +32,12 @@ jobs:
             aws cloudformation \
             list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
             --no-paginate --output text > ~/textfile.txt \
-<<<<<<< HEAD
             --region us-east-1
-=======
-            --region=us-east-1
->>>>>>> af36afd0edb7c7c3977f39b387cd3f707cb7b1de
       - persist_to_workspace:
           root: ~/
           paths: 
             - textfile.txt 
+
   # Executes the cloudfront.yml template that will modify the existing CloudFront Distribution, change its target from the old bucket to the new bucket - `mybucket-${CIRCLE_WORKFLOW_ID:0:7}`. 
   # Notice here we use the stack name `production-distro` which is the same name we used while deploying to the S3 bucket manually.
   promote_to_production:
@@ -58,14 +51,9 @@ jobs:
             aws cloudformation deploy \
             --template-file cloudfront.yml \
             --stack-name production-distro \
-<<<<<<< HEAD
             --parameter-overrides PipelineID="mybucket-${CIRCLE_WORKFLOW_ID:0:7}" \
             --region us-east-1
-=======
-            --parameter-overrides PipelineID="mybucket-${CIRCLE_WORKFLOW_ID:0:7}" \ 
-            --region=us-east-1
->>>>>>> af36afd0edb7c7c3977f39b387cd3f707cb7b1de
-  
+
   clean_up_old_front_end:
     docker:
       - image: amazon/aws-cli
