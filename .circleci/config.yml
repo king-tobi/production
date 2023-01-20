@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Execute bucket.yml - Create Cloudformation Stack
           command: |
-            aws cloudformation deploy \
+            aws cloudformation deploy \ 
             --template-file bucket.yml \
             --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID} \
             --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID}" \
@@ -82,7 +82,7 @@ workflows:
           requires: 
             - create_and_deploy_front_end
       - get_last_deployment_id
-      - clean_up_old_front_end:
+      - clean_up_old_front_end: 
           requires:
             - get_last_deployment_id
             - promote_to_production
